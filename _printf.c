@@ -1,8 +1,11 @@
+#include <stdio.h>
+#include <stdarg.h>
 #include "main.h"
-#include <stddef.h>
+
 /**
  * _printf - Produces output according to a format.
  * @format: The format string.
+ *
  * Return: The number of characters printed
  */
 int _printf(const char *format, ...)
@@ -25,6 +28,7 @@ int _printf(const char *format, ...)
  * and processes the conversion specifiers.
  * @format: The format string.
  * @args: The variable arguments list.
+ *
  * Return: The number of characters printed.
  */
 int format_parser(const char *format, va_list args)
@@ -71,14 +75,14 @@ int handle_conversion_specifier(char specifier, va_list args)
 		case 's':
 			printed_chars += _puts(va_arg(args, char *));
 			break;
+		case '%':
+			_putchar('%');
+			printed_chars++;
+			break;
 		case 'd':
 		case 'i':
 			value = va_arg(args, int);
 			printed_chars += print_number(value);
-			break;
-		case '%':
-			_putchar('%');
-			printed_chars++;
 			break;
 		default:
 			_putchar('%');
@@ -98,20 +102,22 @@ int handle_conversion_specifier(char specifier, va_list args)
  */
 int _puts(char *str)
 {
-	int i = 0;
+	int printed_chars = 0;
 
-	while (str && str[i])
+	while (str && *str)
 	{
-		_putchar(str[i]);
-		i++;
+		_putchar(*str);
+		printed_chars++;
+		str++;
 	}
 
-	return (i);
+	return (printed_chars);
 }
 
 /**
  * print_number - Prints an integer to stdout.
  * @num: The integer to be printed.
+ *
  * Return: The number of characters printed.
  */
 int print_number(int num)
