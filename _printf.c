@@ -21,80 +21,68 @@ int _printf(const char *format, ...)
 }
 
 /**
- * handle_normal_character - Handles a normal character in the format string.
- * @ch: The character to handle.
- * @printed_chars: Pointer to the count of printed characters.
- */
-void handle_normal_character(const char ch, int *printed_chars)
-{
-	_putchar(ch);
-	(*printed_chars)++;
-}
-
-/**
- * handle_format_specifier - Handles a format specifier in the format string.
- * @format_specifier: The format specifier to handle.
+ * format_parser - Parses the format string
+ * and processes the conversion specifiers.
+ * @format: The format string.
  * @args: The variable arguments list.
- * @printed_chars: Pointer to the count of printed characters.
- */
-void handle_format_specifier(const char format_specifier, va_list args,
-		int *printed_chars)
-{
-	if (format_specifier == 'c')
-	{
-		_putchar(va_arg(args, int));
-		(*printed_chars)++;
-	}
-	else if (format_specifier == 's')
-	{
-		char *str = va_arg(args, char *);
-
-		if (str == NULL)
-			str = "(null)";
-		(*printed_chars) += _puts(str);
-	}
-	else if (format_specifier == '%')
-	{
-		_putchar('%');
-		(*printed_chars)++;
-	}
-	else if (format_specifier == '\0')
-	{
-		*printed_chars = -1;
-	}
-	else
-	{
-		_putchar('%');
-		_putchar(format_specifier);
-		(*printed_chars) += 2;
-	}
-}
-
-/**
- * format_parser - Parses and handles the format string.
- * @format: The format string to parse.
- * @args: The variable arguments list.
- *
- * Return: The number of printed characters, or -1 on error.
+ * Return: The number of characters printed.
  */
 int format_parser(const char *format, va_list args)
 {
-	int printed_chars = 0;
-	int i = 0;
+	int i = 0, printed_chars = 0;
 
 	while (format && format[i])
 	{
 		if (format[i] != '%')
 		{
-			handle_normal_character(format[i], &printed_chars);
+			_putchar(format[i]);
+			printed_chars++;
 		}
 		else
 		{
 			i++;
-			handle_format_specifier(format[i], args, &printed_chars);
+			printed_chars += handle_conversion_specifier(format[i], args);
 		}
 
 		i++;
+	}
+
+	return (printed_chars);
+}
+
+/**
+ * handle_conversion_specifier - Handles the conversion specifier.
+ * @specifier: The conversion specifier character.
+ * @args: The variable arguments list.
+ *
+ * Return: The number of characters printed.
+ */
+int handle_conversion_specifier(char specifier, va_list args)
+{
+	char *str;
+	int printed_chars = 0;
+
+	switch (specifier)
+	{
+		case 'c':
+			_putchar(va_arg(args, int));
+			printed_chars++;
+			break;
+		case 's':
+			str = va_arg(args, char *);
+			if (str == NULL)
+				str = "(null)";
+			printed_chars += _puts(str);
+			break;
+		case '%':
+			_putchar('%');
+			printed_chars++;
+			break;
+		default:
+			_putchar('%');
+			_putchar(specifier);
+			printed_chars += 2;
+			break;
 	}
 
 	return (printed_chars);
@@ -118,3 +106,4 @@ int _puts(char *str)
 
 	return (i);
 }
+
