@@ -8,6 +8,7 @@ int _putchar(char c);
 int format_parser(const char *format, va_list args);
 int _puts(char *str);
 int handle_conversion_specifier(char specifier, va_list args);
+int print_number(int num);
 
 #endif /* MAIN_H */
 

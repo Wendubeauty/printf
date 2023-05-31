@@ -59,8 +59,8 @@ int format_parser(const char *format, va_list args)
  */
 int handle_conversion_specifier(char specifier, va_list args)
 {
-	char *str;
 	int printed_chars = 0;
+	int value;
 
 	switch (specifier)
 	{
@@ -69,10 +69,12 @@ int handle_conversion_specifier(char specifier, va_list args)
 			printed_chars++;
 			break;
 		case 's':
-			str = va_arg(args, char *);
-			if (str == NULL)
-				str = "(null)";
-			printed_chars += _puts(str);
+			printed_chars += _puts(va_arg(args, char *));
+			break;
+		case 'd':
+		case 'i':
+			value = va_arg(args, int);
+			printed_chars += print_number(value);
 			break;
 		case '%':
 			_putchar('%');
@@ -96,14 +98,39 @@ int handle_conversion_specifier(char specifier, va_list args)
  */
 int _puts(char *str)
 {
-	int i = 0;
+        int i = 0;
 
-	while (str && str[i])
+        while (str && str[i])
+        {
+                _putchar(str[i]);
+                i++;
+        }
+
+        return (i);
+}
+
+/**
+ * print_number - Prints an integer to stdout.
+ * @num: The integer to be printed.
+ * Return: The number of characters printed.
+ */
+int print_number(int num)
+{
+	int printed_chars = 0;
+
+	if (num < 0)
 	{
-		_putchar(str[i]);
-		i++;
+		_putchar('-');
+		printed_chars++;
+		num = -num;
 	}
 
-	return (i);
+	if (num / 10)
+		printed_chars += print_number(num / 10);
+
+	_putchar('0' + (num % 10));
+	printed_chars++;
+
+	return (printed_chars);
 }
 
