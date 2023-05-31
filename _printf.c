@@ -62,10 +62,12 @@ int format_parser(const char *format, va_list args)
 			}
 			else if (format[i] == '\0')
 				return (-1);
-
+			else
+			{
 				_putchar('%');
 				_putchar(format[i]);
 				printed_chars += 2;
+			}
 		}
 		i++;
 	}
