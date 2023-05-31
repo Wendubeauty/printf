@@ -3,8 +3,7 @@
 /**
  * _printf - Produces output according to a format.
  * @format: The format string.
- *
- * Return: The number of characters printed (excluding the null byte used to end output to strings).
+ * Return: The number of characters printed
  */
 int _printf(const char *format, ...)
 {
@@ -22,7 +21,8 @@ int _printf(const char *format, ...)
 }
 
 /**
- * format_parser - Parses the format string and processes the conversion specifiers.
+ * format_parser - Parses the format string
+ * and processes the conversion specifiers.
  * @format: The format string.
  * @args: The variable arguments list.
  *
@@ -62,16 +62,13 @@ int format_parser(const char *format, va_list args)
 			}
 			else if (format[i] == '\0')
 				return (-1);
-			else
-			{
+
 				_putchar('%');
 				_putchar(format[i]);
 				printed_chars += 2;
-			}
 		}
 		i++;
 	}
-
 	return (printed_chars);
 }
 
